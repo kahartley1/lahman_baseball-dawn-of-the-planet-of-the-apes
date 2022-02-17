@@ -34,4 +34,5 @@ ON p.playerid = mht.playerid
 WHERE yil.years_in_league >= 10
 AND yearid = 2016
 AND hr <> 0
+AND hr = most_hrs
 ORDER BY player_name;
