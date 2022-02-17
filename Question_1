@@ -1,0 +1,5 @@
+Select Max(yearid) AS max_year, 
+	   MIN(yearid) AS min_year
+FROM teams;
+
+--Question 1: starts in 1871 and goes till 2016
