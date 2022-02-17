@@ -1,0 +1,24 @@
+-- Question 9: Which managers have won the TSN Manager of the Year award in both the National League 
+--(NL) and the American League (AL)? Give their full name and the teams that they were managing when they won the award.
+-- want awardsmanagers for managers who have won. want people for managers names. and managershalf for team
+					  
+--WITH main_table AS (SELECT DISTINCT p.playerid, CONCAT(p.namefirst, ' ', p.namelast) AS player_name, am.awardid, am.yearid, am.lgid, m.teamid
+					--FROM people AS p INNER JOIN awardsmanagers AS am ON p.playerid = am.playerid
+					--INNER JOIN managers AS m ON am.yearid = m.yearid 
+					--WHERE am.awardid = 'TSN Manager of the Year' AND am.lgid <> 'ML')
+--SELECT * --player_name, teamid
+--FROM main_table;
+
+WITH both_winners AS ((SELECT DISTINCT am.playerid
+					FROM awardsmanagers AS am
+					WHERE am.lgid = 'NL' AND am.awardid = 'TSN Manager of the Year')
+					INTERSECT
+     				(SELECT DISTINCT am.playerid
+					FROM awardsmanagers AS am
+					WHERE am.lgid = 'AL' AND am.awardid = 'TSN Manager of the Year'))
+SELECT DISTINCT bw.playerid, CONCAT(p.namefirst, ' ', p.namelast) AS player_name, m.teamid, am.yearid, am.awardid 
+FROM both_winners AS bw INNER JOIN people AS p ON bw.playerid = p.playerid
+INNER JOIN awardsmanagers AS am ON bw.playerid = am.playerid
+INNER JOIN managers AS m ON bw.playerid = m.playerid AND am.yearid = m.yearid
+WHERE am.awardid = 'TSN Manager of the Year'
+ORDER BY am.yearid;
